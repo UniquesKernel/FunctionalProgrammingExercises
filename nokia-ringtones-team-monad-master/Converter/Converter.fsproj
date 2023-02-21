@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="WavePacker.fs" />
+        <Compile Include="SampleGenerator.fs" />
+        <Compile Include="Assembler.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Parser\Parser.fsproj" />
+    </ItemGroup>
+
+</Project>
