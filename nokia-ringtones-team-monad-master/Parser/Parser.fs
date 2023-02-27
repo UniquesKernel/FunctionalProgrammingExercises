@@ -2,10 +2,11 @@
 
 open FParsec
 
-failwith "Implement here"
-type Token = { I: int } // TODO 1 create types for language
 
-let pScore: Parser<Token list, unit> = failwith "Implement here" // TODO 2 builder parser
+failwith "Implement here"
+
+let pScore: Parser<Token list, unit> = // failwith "Implement here" // TODO 2 builder parser
+    
 
 let parse (input: string): Choice<string, Token list> =
     match run pScore input with

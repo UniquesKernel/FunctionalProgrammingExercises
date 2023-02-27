@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "ut7GiwWbdv/xaZ2jG/ePh8IA5/ICzNQjdaPKiOnPRVBYEI8E8/+5Z+BVS4mD9C2mPF9yWta42jl4ta0b1sBjog==",
+  "success": true,
+  "projectFilePath": "/home/mortenhfk/Documents/University/FunctionalProgrammingExercises/test/test.fsproj",
+  "expectedPackageFiles": [
+    "/home/mortenhfk/.nuget/packages/fparsec/1.1.1/fparsec.1.1.1.nupkg.sha512",
+    "/home/mortenhfk/.nuget/packages/fsharp.core/7.0.200/fsharp.core.7.0.200.nupkg.sha512"
+  ],
+  "logs": []
+}
