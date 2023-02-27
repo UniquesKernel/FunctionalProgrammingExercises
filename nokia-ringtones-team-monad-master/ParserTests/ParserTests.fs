@@ -21,3 +21,8 @@ let ``It should parse a simple score`` () =
             Assert.AreEqual(2, List.length tokens)
             List.head tokens |> assertFirstToken
             List.item 1 tokens |> assertSecondToken
+
+    
+
+
+    

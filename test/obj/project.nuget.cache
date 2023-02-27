@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "ut7GiwWbdv/xaZ2jG/ePh8IA5/ICzNQjdaPKiOnPRVBYEI8E8/+5Z+BVS4mD9C2mPF9yWta42jl4ta0b1sBjog==",
+  "dgSpecHash": "y3VXlAY4xgAp4JTrBT1vEPGZplTL0XgtYz3FUbeVzvBkmpxMJf19RuIwfOl2bBbvze4VeN7uETjyOAk7z5N1Rw==",
   "success": true,
-  "projectFilePath": "/home/mortenhfk/Documents/University/FunctionalProgrammingExercises/test/test.fsproj",
+  "projectFilePath": "/home/uniquescolonel/Documents/Exercises/FunctionalProgrammingExercises/test/test.fsproj",
   "expectedPackageFiles": [
-    "/home/mortenhfk/.nuget/packages/fparsec/1.1.1/fparsec.1.1.1.nupkg.sha512",
-    "/home/mortenhfk/.nuget/packages/fsharp.core/7.0.200/fsharp.core.7.0.200.nupkg.sha512"
+    "/home/uniquescolonel/.nuget/packages/fparsec/1.1.1/fparsec.1.1.1.nupkg.sha512",
+    "/home/uniquescolonel/.nuget/packages/fsharp.core/7.0.0/fsharp.core.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }

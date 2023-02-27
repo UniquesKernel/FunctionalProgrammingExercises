@@ -16,16 +16,16 @@ type Note =
     | F 
     | FSharp 
     | G 
-    | GSharp
+    | GSharp 
+    | None
 
 type Octave = int
 
-type Tone = {note: Note; octave: Octave}
-
-type RestTone = Rest 
+type Tone = {note: Note; octave: Octave} 
+type RestTone = Rest
 
 type Pitch = 
-    | Tone of Tone 
+    | Tone of Tone
     | Rest of RestTone
 
 type Token = {pitch: Pitch; duration: Duration}
@@ -44,6 +44,7 @@ let noteToNumber note =
         | FSharp -> 10
         | G -> 11
         | GSharp -> 12
+        | None -> 0
     
 let durationParser: Parser<float, unit> =
     let intParser: Parser<int, unit> = pint32
@@ -52,32 +53,35 @@ let durationParser: Parser<float, unit> =
     let convertToFloat (durationInt: int): float = float durationInt
 
     let floatWithTrailingDotParser: Parser<float, unit> = 
-        (intParser |>> multiplyBy1_5) .>> followedBy trailingDotParser
+        (intParser |>> multiplyBy1_5) .>> trailingDotParser
 
     let floatWithoutTrailingDotParser: Parser<float, unit> = 
         (intParser |>> convertToFloat)
 
     let durationParser': Parser<float, unit> = 
-        attempt floatWithTrailingDotParser <|> floatWithoutTrailingDotParser
+        attempt floatWithTrailingDotParser <|> 
+        attempt floatWithoutTrailingDotParser
 
     durationParser'
 
-let noteParser: Parser<Note, unit> =
-    let noteParser': Parser<Note, unit> = 
-        attempt (pchar '#' >>. (pchar 'A') >>. preturn Note.ASharp) <|>
-        attempt (pchar 'A' >>. preturn Note.A) <|>
-        attempt (pchar 'B' >>. preturn Note.B) <|>
-        attempt (pchar '#' >>. (pchar 'C') >>. preturn Note.CSharp) <|>
-        attempt (pchar 'C' >>. preturn Note.C) <|>
-        attempt (pchar '#' >>. (pchar 'D') >>. preturn Note.DSharp) <|>
-        attempt (pchar 'D' >>. preturn Note.D) <|>
-        attempt (pchar 'E' >>. preturn Note.E) <|>
-        attempt (pchar '#' >>. (pchar 'F') >>. preturn Note.FSharp) <|>
-        attempt (pchar 'F' >>. preturn Note.F) <|>
-        attempt (pchar '#' >>. (pchar 'G') >>. preturn Note.GSharp) <|>
-        attempt (pchar 'G' >>. preturn Note.G)
+let noteParser: Parser<Note, unit> = 
+    let noteParser': Parser<Note, unit> =
+        attempt (pchar '#' >>. (pchar 'a') >>. preturn Note.ASharp) <|>
+        attempt (pchar 'a' >>. preturn Note.A) <|>
+        attempt (pchar 'b' >>. preturn Note.B) <|>
+        attempt (pchar '#' >>. (pchar 'c') >>. preturn Note.CSharp) <|>
+        attempt (pchar 'c' >>. preturn Note.C) <|>
+        attempt (pchar '#' >>. (pchar 'd') >>. preturn Note.DSharp) <|>
+        attempt (pchar 'd' >>. preturn Note.D) <|>
+        attempt (pchar 'e' >>. preturn Note.E) <|>
+        attempt (pchar '#' >>. (pchar 'f') >>. preturn Note.FSharp) <|>
+        attempt (pchar 'f' >>. preturn Note.F) <|>
+        attempt (pchar '#' >>. (pchar 'g') >>. preturn Note.GSharp) <|>
+        attempt (pchar 'g' >>. preturn Note.G) <|>
+        attempt (pchar '-' >>. preturn Note.None)
 
     noteParser'
+
 
 let octaveParser: Parser<Octave, unit> =
     let intParser = pint32
@@ -85,39 +89,39 @@ let octaveParser: Parser<Octave, unit> =
     intParser
 
 let toneParser: Parser<Tone, unit> = 
-    let noteParser: Parser<Note, unit> = noteParser
-    let octaveParser: Parser<Octave, unit> = octaveParser
+    let noteParser = noteParser
+    let octaveParser = octaveParser
 
-    let toneParser': Parser<Tone, unit> = 
-        noteParser .>>. octaveParser |>> (fun (note, octave) -> {note = note; octave = octave})
+    let toneParser' = 
+        noteParser .>>. octaveParser |>> fun (note, octave) -> {note = note; octave = octave}
 
-    toneParser'
+    toneParser' 
 
-let restParser: Parser<RestTone, unit> = 
-    let restParser': Parser<RestTone, unit> = 
-        pchar '-' >>. preturn RestTone.Rest
+let restParser: Parser<RestTone, unit> =
+    let restParser' = 
+       attempt (pchar '-' >>. preturn RestTone.Rest)
 
     restParser'
 
 let pitchParser: Parser<Pitch, unit> = 
-    let toneParser: Parser<Tone, unit> = toneParser
-    let restParser: Parser<RestTone, unit> = restParser
+    let toneParser = toneParser
+    let restParser = restParser
 
-    let pitchParser': Parser<Pitch, unit> = 
+    let pitchParser' = 
         attempt (toneParser |>> fun tone -> Pitch.Tone tone) <|>
         attempt (restParser |>> fun rest -> Pitch.Rest rest)
 
     pitchParser'
 
-let tokenParser: Parser<Token, unit> = 
-    let pitchParser: Parser<Pitch, unit> = pitchParser
-    let durationParser: Parser<float, unit> = durationParser
+let tokenParser: Parser<Token, unit> =
+    let pitchParser = pitchParser
+    let durationParser = durationParser
 
-    let tokenParser' =
+    let tokenParser' = 
         pipe2 durationParser pitchParser (fun duration pitch -> {pitch = pitch; duration = duration})
 
     let tokenParser'' = 
-        tokenParser' .>> spaces
+        tokenParser' .>> opt spaces
 
     tokenParser''
     
@@ -158,8 +162,6 @@ let durationFromToken (token: Token): float =
 let overallIndex (note, octave) = 
     let octaveIndex = noteToNumber note + (octave - 1) * 12
     octaveIndex
-    
-    // failwith "Implement here"
 
 // TODO 5 calculate semitones between to notes*octave
 // [A; A#; B; C; C#; D; D#; E; F; F#; G; G#]
@@ -177,10 +179,24 @@ let semitonesBetween (lower: Tone) (upper: Tone): int =
     let lowerOffset = noteOffSetMap.[lower.note]
     let upperOffset = noteOffSetMap.[upper.note]
 
-    let semitones = (upper.octave - lower.octave) * 12 + (upperOffset - lowerOffset)
+    let semitones = (upper.octave - lower.octave + 1) * 12 + (upperOffset - lowerOffset)
     semitones
 
 // TODO 6
 // For a tone frequency formula can be found here: http://www.phy.mtu.edu/~suits/NoteFreqCalcs.html
 // 220 * 2^(1/12) ^ semitonesBetween (A1, Token.pitch) 
-let frequency (token: Token): float = failwith "Implement here"
+let frequency (token: Token): float =
+    let baseFrequency = 220.0
+    let A1 = {note = A; octave = 1}
+    let toneFromToken = 
+        match token.pitch with
+        | Pitch.Tone tone -> tone
+        | Pitch.Rest _ -> {note = None; octave = 0}
+
+    if toneFromToken.note = None then 0.0
+    else
+        let someConst = 2.0 ** (1.0 / 12.0)
+
+        let semitones = semitonesBetween A1 toneFromToken
+
+        baseFrequency * (someConst ** float semitones)

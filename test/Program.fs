@@ -65,20 +65,18 @@ let semitonesBetween (lower: Tone) (upper: Tone): int =
 
 
 let noteParser: Parser<Note, unit> = 
-    // create a note parser that takes a string and returns a Note the strings are the note names
-
     let noteParser': Parser<Note, unit> =
         attempt (pchar '#' >>. (pchar 'A') >>. preturn Note.ASharp) <|>
         attempt (pchar 'A' >>. preturn Note.A) <|>
         attempt (pchar 'B' >>. preturn Note.B) <|>
-        attempt (pchar '#' >>. followedBy (pchar 'C') >>. preturn Note.CSharp) <|>
+        attempt (pchar '#' >>. (pchar 'C') >>. preturn Note.CSharp) <|>
         attempt (pchar 'C' >>. preturn Note.C) <|>
-        attempt (pchar '#' >>. followedBy (pchar 'D') >>. preturn Note.DSharp) <|>
+        attempt (pchar '#' >>. (pchar 'D') >>. preturn Note.DSharp) <|>
         attempt (pchar 'D' >>. preturn Note.D) <|>
         attempt (pchar 'E' >>. preturn Note.E) <|>
-        attempt (pchar '#' >>. followedBy (pchar 'F') >>. preturn Note.FSharp) <|>
+        attempt (pchar '#' >>. (pchar 'F') >>. preturn Note.FSharp) <|>
         attempt (pchar 'F' >>. preturn Note.F) <|>
-        attempt (pchar '#' >>. followedBy (pchar 'G') >>. preturn Note.GSharp) <|>
+        attempt (pchar '#' >>. (pchar 'G') >>. preturn Note.GSharp) <|>
         attempt (pchar 'G' >>. preturn Note.G)
 
     noteParser'
@@ -109,8 +107,8 @@ let pitchParser: Parser<Pitch, unit> =
     let restParser = restParser
 
     let pitchParser' = 
-        attempt (toneParser |>> fun tone -> Pitch.Tone tone) <|>
-        attempt (restParser |>> fun rest -> Pitch.Rest rest)
+        attempt (restParser |>> fun rest -> Pitch.Rest rest) <|> 
+        attempt (toneParser |>> fun tone -> Pitch.Tone tone)
 
     pitchParser'
 
@@ -126,6 +124,15 @@ let tokenParser: Parser<Token, unit> =
 
     tokenParser''
 
+let scoreParser: Parser<Token list, unit> = 
+    let tokenParser = tokenParser
+
+    let scoreParser' = 
+        many1 tokenParser
+
+    scoreParser'
+
+// convert a list of parsed tokens to a int16 wave format 
 
 
 let applyParser (input:string) (parser: Parser<'a, unit>) = 
@@ -153,15 +160,15 @@ applyParser "2A2" tokenParser // expect {pitch = Tone {note = A; octave = 2}; du
 applyParser "2#A2" tokenParser // expect {pitch = Tone {note = ASharp; octave = 2}; duration = 2.0}
 applyParser "2-" tokenParser // expect {pitch = Rest RestTone.Rest; duration = 2.0}
 applyParser "2.-" tokenParser // expect {pitch = Rest RestTone.Rest; duration = 3.0}
-applyParser "2.A2" tokenParser // expect {pitch = Tone {note = A; octave = 2}; duration = 2.0}
-applyParser "2.#A2" tokenParser // expect {pitch = Tone {note = ASharp; octave = 2}; duration = 2.0}
-applyParser "2.E2" tokenParser 
+applyParser "32.A2" tokenParser // expect {pitch = Tone {note = A; octave = 2}; duration = 2.0}
+applyParser "32.#A2" tokenParser // expect {pitch = Tone {note = ASharp; octave = 2}; duration = 2.0}
+applyParser "32.E2" tokenParser 
 
 printfn "------------------"
 
 // apply tokenParser to a string of tokens 
 
-let result = "2.A2 2.#A2 2.E2"
+let result = "32.A2 32.#A2 2.E2"
 
 let resultList = result.Split(' ') |> Array.map (fun token -> applyTokenParser token)
 resultList |> Array.iter (fun token -> printfn "%A" token)
@@ -176,3 +183,5 @@ let semitones = semitonesBetween lowerTone upperTone
 printfn "%i" semitones
 
 applyParser result (many1 tokenParser)
+
+applyParser "32.#D3 16-" scoreParser

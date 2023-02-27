@@ -1,26 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "/home/mortenhfk/Documents/University/FunctionalProgrammingExercises/test/test.fsproj": {}
+    "/home/uniquescolonel/Documents/Exercises/FunctionalProgrammingExercises/test/test.fsproj": {}
   },
   "projects": {
-    "/home/mortenhfk/Documents/University/FunctionalProgrammingExercises/test/test.fsproj": {
+    "/home/uniquescolonel/Documents/Exercises/FunctionalProgrammingExercises/test/test.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mortenhfk/Documents/University/FunctionalProgrammingExercises/test/test.fsproj",
+        "projectUniqueName": "/home/uniquescolonel/Documents/Exercises/FunctionalProgrammingExercises/test/test.fsproj",
         "projectName": "test",
-        "projectPath": "/home/mortenhfk/Documents/University/FunctionalProgrammingExercises/test/test.fsproj",
-        "packagesPath": "/home/mortenhfk/.nuget/packages/",
-        "outputPath": "/home/mortenhfk/Documents/University/FunctionalProgrammingExercises/test/obj/",
+        "projectPath": "/home/uniquescolonel/Documents/Exercises/FunctionalProgrammingExercises/test/test.fsproj",
+        "packagesPath": "/home/uniquescolonel/.nuget/packages/",
+        "outputPath": "/home/uniquescolonel/Documents/Exercises/FunctionalProgrammingExercises/test/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/mortenhfk/.nuget/NuGet/NuGet.Config"
+          "/home/uniquescolonel/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "/usr/share/dotnet/sdk/7.0.200/FSharp/library-packs": {},
+          "/usr/share/dotnet/sdk/7.0.102/FSharp/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -42,7 +42,7 @@
             "FSharp.Core": {
               "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
               "target": "Package",
-              "version": "[7.0.200, )",
+              "version": "[7.0.0, )",
               "generatePathProperty": true
             }
           },
@@ -62,7 +62,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.200/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.102/RuntimeIdentifierGraph.json"
         }
       }
     }

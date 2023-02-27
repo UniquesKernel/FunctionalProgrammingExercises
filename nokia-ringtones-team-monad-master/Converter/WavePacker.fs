@@ -18,11 +18,29 @@ let pack (d: int16[]) =
     let dataLength = Array.length d*2
     
     // RIFF
-    failwith "Implement here"
-    
+    writer.Write("RIFF".ToCharArray())
+    writer.Write(36 + dataLength) // chunksize
+    writer.Write("WAVE".ToCharArray())
+
     // data
-    failwith "Implement here"
+    writer.Write("fmt ".ToCharArray())
+    writer.Write(16) // subchunk1size
+    writer.Write(1) // audioformat
+    writer.Write(1) // num channels
+    writer.Write(44100) // sample rate
+    writer.Write(44100 * 16 / 8) // byte rate
+    writer.Write(2) // block align
+    writer.Write(16) // bits per sample
+
+
+    writer.Write("data".ToCharArray())
+    writer.Write(dataLength) // subchunk2size
+
+    for i in 0..Array.length d-5 do
+        writer.Write(d.[i])
+
     stream
+
     
 let write filename (ms: MemoryStream) =
     use fs = new FileStream(Path.Combine(__SOURCE_DIRECTORY__, filename), FileMode.Create) // use IDisposible
