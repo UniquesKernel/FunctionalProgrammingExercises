@@ -18,12 +18,12 @@ let pack (d: int16[]) =
     let dataLength = Array.length d*2
     
     // RIFF
-    writer.Write("RIFF".ToCharArray())
+    writer.Write(Encoding.ASCII.GetBytes("RIFF"))
     writer.Write(36 + dataLength) // chunksize
-    writer.Write("WAVE".ToCharArray())
+    writer.Write(Encoding.ASCII.GetBytes("WAVE"))
 
     // data
-    writer.Write("fmt ".ToCharArray())
+    writer.Write(Encoding.ASCII.GetBytes("fmt "))
     writer.Write(16) // subchunk1size
     writer.Write(1) // audioformat
     writer.Write(1) // num channels
@@ -33,10 +33,10 @@ let pack (d: int16[]) =
     writer.Write(16) // bits per sample
 
 
-    writer.Write("data".ToCharArray())
+    writer.Write(Encoding.ASCII.GetBytes("data"))
     writer.Write(dataLength) // subchunk2size
 
-    for i in 0..Array.length d-5 do
+    for i in 0..Array.length d-1 do
         writer.Write(d.[i])
 
     stream

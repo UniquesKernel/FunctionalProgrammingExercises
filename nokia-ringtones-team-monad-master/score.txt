@@ -1,6 +1,4 @@
-[{ pitch = Tone { note = D
-                 octave = 3 }
-  duration = 48.0 }; { pitch = Rest Rest
-  duration = 24.0 }; { pitch = Tone { note = ASharp
+[{ pitch = Rest Rest
+  duration = 3.0 }; { pitch = Tone { note = ASharp
                  octave = 2 }
-  duration = 3.0 }; ... ]
+  duration = 6.0 }]
