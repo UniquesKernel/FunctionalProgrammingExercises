@@ -16,7 +16,7 @@ let pack (d: int16[]) =
     let stream = new MemoryStream()
     let writer = new BinaryWriter(stream, Encoding.ASCII)
     let dataLength = Array.length d*2
-    
+
     // RIFF
     writer.Write(Encoding.ASCII.GetBytes("RIFF"))
     writer.Write(36 + dataLength) // chunksize
@@ -25,12 +25,12 @@ let pack (d: int16[]) =
     // data
     writer.Write(Encoding.ASCII.GetBytes("fmt "))
     writer.Write(16) // subchunk1size
-    writer.Write(1) // audioformat
-    writer.Write(1) // num channels
+    writer.Write(1s) // audioformat
+    writer.Write(1s) // num channels
     writer.Write(44100) // sample rate
     writer.Write(44100 * 16 / 8) // byte rate
-    writer.Write(2) // block align
-    writer.Write(16) // bits per sample
+    writer.Write(2s) // block align
+    writer.Write(16s) // bits per sample
 
 
     writer.Write(Encoding.ASCII.GetBytes("data"))
