@@ -176,7 +176,7 @@ resultList |> Array.iter (fun token -> printfn "%A" token)
 printfn "------------------"
 
 let lowerTone = {note = C; octave = 1}
-let upperTone = {note = B; octave = 3}
+let upperTone = {note = C; octave = 3}
 
 let semitones = semitonesBetween lowerTone upperTone
 

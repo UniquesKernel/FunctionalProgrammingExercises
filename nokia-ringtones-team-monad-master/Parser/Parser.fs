@@ -179,7 +179,7 @@ let semitonesBetween (lower: Tone) (upper: Tone): int =
     let lowerOffset = noteOffSetMap.[lower.note]
     let upperOffset = noteOffSetMap.[upper.note]
 
-    let semitones = (upper.octave - lower.octave + 1) * 12 + (upperOffset - lowerOffset)
+    let semitones = (upper.octave - lower.octave) * 12 + (upperOffset - lowerOffset)
     semitones
 
 // TODO 6
